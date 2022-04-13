@@ -8,4 +8,4 @@ const creatTaskHandler = () => {
     tasksToDoEl.appendChild(listItemEl);
 }
 
-buttonEl.addEventListener("click", creatTaskHandler)
+buttonEl.addEventListener("click", creatTaskHandler);
