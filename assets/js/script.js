@@ -1,21 +1,35 @@
 const formEl = document.querySelector("#task-form")
 const tasksToDoEl = document.querySelector("#tasks-to-do");
 
-const creatTaskHandler = (event) => {
+// Saves User input as an object in taskDataObj
+const taskFormHandler = (event) => {
     event.preventDefault();
     let taskNameInput = document.querySelector("input[name='task-name']").value;
     let taskTypeInput = document.querySelector("select[name='task-type']").value;
+
+    let taskDataObj = {
+        name: taskNameInput,
+        type: taskTypeInput
+    };
+
+    // Pass taskDataObj as argument into createTaskEl()
+    createTaskEl(taskDataObj);
+};
+
+// Function accepts argument that is used to append li to ul
+const createTaskEl = (taskDataObj) => {
     let listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
 
     let taskInfoEl = document.createElement("div");
     taskInfoEl.className = "task-info";
+    taskInfoEl.innerHTML = `<h3 class="task-name">${taskDataObj.name}</h3><span class="task-type">${taskDataObj.type}</span>`;
 
-    taskInfoEl.innerHTML = `<h3 class="task-name">${taskNameInput}</h3><span class="task-type">${taskTypeInput}</span>`;
-
+    // Appends div containing task info into li
     listItemEl.appendChild(taskInfoEl);
 
+    // Appends li into ul
     tasksToDoEl.appendChild(listItemEl);
 }
 
-formEl.addEventListener("submit", creatTaskHandler);
+formEl.addEventListener("submit", taskFormHandler);
