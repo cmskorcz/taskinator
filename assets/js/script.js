@@ -1,5 +1,6 @@
 const formEl = document.querySelector("#task-form")
 const tasksToDoEl = document.querySelector("#tasks-to-do");
+const pageContentEl = document.querySelector("#page-content");
 
 // Sets starting ID for tasks
 let taskIdCounter = 0;
@@ -93,4 +94,22 @@ const createTaskActions = (taskId) => {
 
 };
 
+const taskButtonHandler = (event) => {
+
+    if (event.target.matches(".delete-btn")) {
+
+        let taskId = event.target.getAttribute("data-task-id");
+        deleteTask(taskId);
+    };
+
+};
+
+const deleteTask = (taskId) => {
+    
+    let taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+    taskSelected.remove();
+
+};
+
 formEl.addEventListener("submit", taskFormHandler);
+pageContentEl.addEventListener("click", taskButtonHandler);
