@@ -18,14 +18,35 @@ const taskFormHandler = (event) => {
 
     formEl.reset();
 
-    let taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    };
+    let isEdit = formEl.hasAttribute("data-task-id");
 
     // Pass taskDataObj as argument into createTaskEl()
-    createTaskEl(taskDataObj);
+    if (isEdit) {
+
+        let taskId = formEl.getAttribute("data-task-id");
+        completeEditTask(taskNameInput, taskTypeInput, taskId);
+    } else {
+
+        let taskDataObj = {
+            name: taskNameInput,
+            type: taskTypeInput
+        };
+        
+        createTaskEl(taskDataObj);
+    };
 };
+
+const completeEditTask = (taskName, taskType, taskId) => {
+
+    let taskSelected = document.querySelector(`.task-item[data-task-id='${taskId}']`);
+
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    alert("Task Updated!");
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Add Task";
+}
 
 // Function accepts argument that is used to append li to ul
 const createTaskEl = (taskDataObj) => {
