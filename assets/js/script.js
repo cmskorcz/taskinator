@@ -95,13 +95,34 @@ const createTaskActions = (taskId) => {
 };
 
 const taskButtonHandler = (event) => {
+    
+    let targetEl = event.target;
 
-    if (event.target.matches(".delete-btn")) {
+    if (targetEl.matches(".edit-btn")) {
 
-        let taskId = event.target.getAttribute("data-task-id");
+        let taskId = targetEl.getAttribute("data-task-id");
+        editTask(taskId);
+
+    } else if (targetEl.matches(".delete-btn")) {
+
+        let taskId = targetEl.getAttribute("data-task-id");
         deleteTask(taskId);
     };
 
+};
+
+const editTask = (taskId) => {
+
+    let taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
+
+    let taskName = taskSelected.querySelector("h3.task-name").textContent;
+
+    let taskType = taskSelected.querySelector("span.task-type").textContent;
+
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+    document.querySelector("#save-task").textContent = "Save Task";
+    formEl.setAttribute("data-task-id", taskId);
 };
 
 const deleteTask = (taskId) => {
