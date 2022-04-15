@@ -4,6 +4,8 @@ const pageContentEl = document.querySelector("#page-content");
 const tasksInProgressEl = document.querySelector("#tasks-in-progress");
 const tasksCompletedEl = document.querySelector("#tasks-completed");
 
+let tasks = [];
+
 // Sets starting ID for tasks
 let taskIdCounter = 0;
 
@@ -31,7 +33,8 @@ const taskFormHandler = (event) => {
 
         let taskDataObj = {
             name: taskNameInput,
-            type: taskTypeInput
+            type: taskTypeInput,
+            status: "to do"
         };
         
         createTaskEl(taskDataObj);
@@ -44,6 +47,13 @@ const completeEditTask = (taskName, taskType, taskId) => {
 
     taskSelected.querySelector("h3.task-name").textContent = taskName;
     taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === parseInt(taskId)) {
+            tasks[i].name = taskName;
+            tasks[i].type = taskType;
+        } 
+    };
 
     alert("Task Updated!");
     formEl.removeAttribute("data-task-id");
@@ -72,6 +82,10 @@ const createTaskEl = (taskDataObj) => {
 
     // Appends li into ul
     tasksToDoEl.appendChild(listItemEl);
+
+    // Adds id to task object
+    taskDataObj.id = taskIdCounter;
+    tasks.push(taskDataObj);
 
     taskIdCounter++;
 };
@@ -153,6 +167,16 @@ const deleteTask = (taskId) => {
     let taskSelected = document.querySelector(`.task-item[data-task-id="${taskId}"]`);
     taskSelected.remove();
 
+    let updatedTaskArr = [];
+    
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id !== parseInt(taskId)) {
+            updatedTaskArr.push(tasks[i]);
+        }
+    }
+
+    tasks = updatedTaskArr;
+
 };
 
 const taskStatusChangeHandler = (event) => {
@@ -168,6 +192,12 @@ const taskStatusChangeHandler = (event) => {
         tasksInProgressEl.appendChild(taskSelected);
     } else if (statusValue === "completed") {
         tasksCompletedEl.appendChild(taskSelected);
+    };
+
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === parseInt(taskId)) {
+            tasks[i].status = statusValue;
+        }
     };
 }
 
