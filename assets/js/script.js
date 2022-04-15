@@ -55,6 +55,8 @@ const completeEditTask = (taskName, taskType, taskId) => {
         } 
     };
 
+    saveTasks();
+
     alert("Task Updated!");
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Add Task";
@@ -86,6 +88,8 @@ const createTaskEl = (taskDataObj) => {
     // Adds id to task object
     taskDataObj.id = taskIdCounter;
     tasks.push(taskDataObj);
+
+    saveTasks();
 
     taskIdCounter++;
 };
@@ -176,6 +180,7 @@ const deleteTask = (taskId) => {
     }
 
     tasks = updatedTaskArr;
+    saveTasks();
 
 };
 
@@ -199,6 +204,13 @@ const taskStatusChangeHandler = (event) => {
             tasks[i].status = statusValue;
         }
     };
+
+    saveTasks();
+
+};
+
+const saveTasks = () => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 formEl.addEventListener("submit", taskFormHandler);
